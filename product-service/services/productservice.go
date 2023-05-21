@@ -1,16 +1,18 @@
 package services
 
 import (
-	"errors"
 	"product-service/models"
 )
 
-func CreateProduct(newProduct *models.Product) (*models.Product, error) {
-	if newProduct == nil {
-		return nil, errors.New("invalid product")
+func CreateProduct(name string, description string, price float64, quantity int32) (*models.Product, error) {
+	newProduct := models.Product{
+		Name:        name,
+		Description: description,
+		Price:       price,
+		Quantity:    quantity,
 	}
 
-	return models.CreateProduct(newProduct)
+	return models.CreateProduct(&newProduct)
 }
 
 func GetAllProducts() ([]models.Product, error) {

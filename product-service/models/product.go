@@ -15,7 +15,7 @@ type Product struct {
 	Name        string  `gorm:"column:name;unique"`
 	Description string  `gorm:"column:description"`
 	Price       float64 `gorm:"column:price"`
-	Quantity    int     `gorm:"column:quantity"`
+	Quantity    int32   `gorm:"column:quantity"`
 }
 
 func InitProductModel(dbInstance *gorm.DB) {
