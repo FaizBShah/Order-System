@@ -2,30 +2,31 @@ package database
 
 import (
 	"errors"
+	"product-service/models"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-type DB struct {
-	*gorm.DB
-}
+var (
+	DB *gorm.DB
+)
 
-func (d *DB) Create() error {
+func Create() error {
 	dsn := ""
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	DB, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
 		return errors.New("failed to connect to database")
 	}
 
-	d = &DB{db}
+	initModels(DB)
 
 	return nil
 }
 
-func (d *DB) Close() error {
-	sqlDb, err := d.DB.DB()
+func Close() error {
+	sqlDb, err := DB.DB()
 
 	if err != nil {
 		return errors.New("failed to close the database connection")
@@ -34,5 +35,9 @@ func (d *DB) Close() error {
 	sqlDb.Close()
 
 	return nil
+}
+
+func initModels(db *gorm.DB) {
+	models.InitProductModel(db)
 }
 
