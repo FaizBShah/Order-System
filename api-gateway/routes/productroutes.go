@@ -1,11 +1,11 @@
 package routes
 
 import (
-	"api-gateway/handlers"
+	"api-gateway/handlers/producthandler"
 
 	"github.com/gorilla/mux"
 )
 
 func RegisterProductRoutes(router *mux.Router) {
-	router.HandleFunc("/", handlers.GetAllProducts).Methods("GET")
+	router.HandleFunc("/", producthandler.GetAllProducts).Methods("GET")
 }
