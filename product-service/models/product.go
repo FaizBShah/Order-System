@@ -24,6 +24,10 @@ func InitProductModel(dbInstance *gorm.DB) {
 }
 
 func CreateProduct(newProduct *Product) (*Product, error) {
+	if newProduct == nil {
+		return nil, errors.New("invalid product")
+	}
+
 	if err := db.Create(newProduct).Error; err != nil {
 		return nil, errors.New("error in creating a new product")
 	}
