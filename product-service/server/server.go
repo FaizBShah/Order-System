@@ -19,7 +19,12 @@ func (s *GRPCServer) CreateProduct(ctx context.Context, req *proto.CreateProduct
 		return nil, err
 	}
 
-	return &proto.CreateProductResponse{Id: int32(product.ID), Name: product.Name, Description: product.Description, Price: product.Price, Quantity: product.Quantity}, nil
+	return &proto.CreateProductResponse{
+		Id:          int32(product.ID),
+		Name:        product.Name,
+		Description: product.Description,
+		Price:       product.Price,
+		Quantity:    product.Quantity}, nil
 }
 
 func (s *GRPCServer) GetAllProducts(ctx context.Context, _ *emptypb.Empty) (*proto.GetAllProductsResponse, error) {
@@ -32,7 +37,12 @@ func (s *GRPCServer) GetAllProducts(ctx context.Context, _ *emptypb.Empty) (*pro
 	productsResponse := make([]*proto.CreateProductResponse, len(products))
 
 	for _, product := range products {
-		productsResponse = append(productsResponse, &proto.CreateProductResponse{Id: int32(product.ID), Name: product.Name, Description: product.Description, Price: product.Price, Quantity: product.Quantity})
+		productsResponse = append(productsResponse, &proto.CreateProductResponse{
+			Id:          int32(product.ID),
+			Name:        product.Name,
+			Description: product.Description,
+			Price:       product.Price,
+			Quantity:    product.Quantity})
 	}
 
 	return &proto.GetAllProductsResponse{Products: productsResponse}, nil
