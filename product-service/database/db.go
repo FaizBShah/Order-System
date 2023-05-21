@@ -13,14 +13,16 @@ var (
 )
 
 func Create() error {
+	var err error
+
 	dsn := ""
-	DB, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
 		return errors.New("failed to connect to database")
 	}
 
-	initModels(DB)
+	initModels()
 
 	return nil
 }
@@ -37,7 +39,6 @@ func Close() error {
 	return nil
 }
 
-func initModels(db *gorm.DB) {
-	models.InitProductModel(db)
+func initModels() {
+	models.InitProductModel(DB)
 }
-
