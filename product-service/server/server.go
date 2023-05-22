@@ -36,13 +36,13 @@ func (s *GRPCServer) GetAllProducts(ctx context.Context, _ *emptypb.Empty) (*pro
 
 	productsResponse := make([]*proto.CreateProductResponse, len(products))
 
-	for _, product := range products {
-		productsResponse = append(productsResponse, &proto.CreateProductResponse{
+	for idx, product := range products {
+		productsResponse[idx] = &proto.CreateProductResponse{
 			Id:          int32(product.ID),
 			Name:        product.Name,
 			Description: product.Description,
 			Price:       product.Price,
-			Quantity:    product.Quantity})
+			Quantity:    product.Quantity}
 	}
 
 	return &proto.GetAllProductsResponse{Products: productsResponse}, nil

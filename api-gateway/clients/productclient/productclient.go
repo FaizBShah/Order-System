@@ -18,7 +18,6 @@ func InitProductClient() {
 	if err != nil {
 		log.Fatal("Failed to connect to the product microservice")
 	}
-	defer conn.Close()
 
 	log.Printf("gRPC Client connected to Product Microservice")
 	ProductServiceClient = proto.NewProductServiceClient(conn)

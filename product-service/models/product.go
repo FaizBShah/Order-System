@@ -12,6 +12,7 @@ var (
 
 type Product struct {
 	gorm.Model
+	ID          uint    `gorm:"primarykey;AUTO_INCREMENT"`
 	Name        string  `gorm:"column:name;unique"`
 	Description string  `gorm:"column:description"`
 	Price       float64 `gorm:"column:price"`
