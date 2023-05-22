@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net"
 	"product-service/database"
@@ -29,7 +28,7 @@ func main() {
 	grpcServer := grpc.NewServer()
 	proto.RegisterProductServiceServer(grpcServer, &server.GRPCServer{})
 
-	fmt.Printf("Server started at port 9001")
+	log.Printf("Server started at port 9001")
 	lis, err := net.Listen("tcp", ":9001")
 
 	if err != nil {

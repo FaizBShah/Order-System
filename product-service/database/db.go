@@ -3,6 +3,7 @@ package database
 import (
 	"errors"
 	"fmt"
+	"log"
 	"os"
 	"product-service/models"
 
@@ -26,6 +27,8 @@ func Connect() error {
 
 	initModels()
 
+	log.Printf("Database connected...")
+
 	return nil
 }
 
@@ -38,9 +41,12 @@ func Close() error {
 
 	sqlDb.Close()
 
+	log.Printf("Database closed...")
+
 	return nil
 }
 
 func initModels() {
+	log.Printf("Initializing models")
 	models.InitProductModel(DB)
 }
