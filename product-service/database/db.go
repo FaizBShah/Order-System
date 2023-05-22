@@ -2,6 +2,8 @@ package database
 
 import (
 	"errors"
+	"fmt"
+	"os"
 	"product-service/models"
 
 	"gorm.io/driver/postgres"
@@ -12,10 +14,10 @@ var (
 	DB *gorm.DB
 )
 
-func Create() error {
+func Connect() error {
 	var err error
 
-	dsn := ""
+	dsn := fmt.Sprintf("host=localhost port=5432 user=%s password=%s dbname=%s sslmode=disable", os.Getenv("DB_USERNAME"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME"))
 	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
