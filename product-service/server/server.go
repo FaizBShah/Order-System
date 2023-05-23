@@ -47,3 +47,56 @@ func (s *GRPCServer) GetAllProducts(ctx context.Context, _ *emptypb.Empty) (*pro
 
 	return &proto.GetAllProductsResponse{Products: productsResponse}, nil
 }
+
+func (s *GRPCServer) GetProduct(ctx context.Context, req *proto.ProductIdRequest) (*proto.CreateProductResponse, error) {
+	product, err := services.GetProduct(req.Id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &proto.CreateProductResponse{
+		Id:          int32(product.ID),
+		Name:        product.Name,
+		Description: product.Description,
+		Price:       product.Price,
+		Quantity:    product.Quantity}, nil
+}
+
+func (s *GRPCServer) DeleteProduct(ctx context.Context, req *proto.ProductIdRequest) (*proto.ProductIdRequest, error) {
+	if err := services.DeleteProduct(req.Id); err != nil {
+		return nil, err
+	}
+
+	return &proto.ProductIdRequest{Id: req.Id}, nil
+}
+
+func (s *GRPCServer) AddProducts(ctx context.Context, req *proto.UpdateProductQuantityRequest) (*proto.CreateProductResponse, error) {
+	product, err := services.AddProducts(req.Id, req.Quantity)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &proto.CreateProductResponse{
+		Id:          int32(product.ID),
+		Name:        product.Name,
+		Description: product.Description,
+		Price:       product.Price,
+		Quantity:    product.Quantity}, nil
+}
+
+func (s *GRPCServer) RemoveProducts(ctx context.Context, req *proto.UpdateProductQuantityRequest) (*proto.CreateProductResponse, error) {
+	product, err := services.RemoveProducts(req.Id, req.Quantity)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &proto.CreateProductResponse{
+		Id:          int32(product.ID),
+		Name:        product.Name,
+		Description: product.Description,
+		Price:       product.Price,
+		Quantity:    product.Quantity}, nil
+}

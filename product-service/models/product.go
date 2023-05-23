@@ -30,7 +30,7 @@ func CreateProduct(newProduct *Product) (*Product, error) {
 	}
 
 	if err := db.Create(newProduct).Error; err != nil {
-		return nil, errors.New("error in creating a new product")
+		return nil, err
 	}
 
 	return newProduct, nil
@@ -40,8 +40,70 @@ func GetAllProducts() ([]Product, error) {
 	var products []Product
 
 	if err := db.Find(&products).Error; err != nil {
-		return nil, errors.New("error while fetching products")
+		return nil, err
 	}
 
 	return products, nil
+}
+
+func GetProduct(id int32) (*Product, error) {
+	var product *Product
+
+	if err := db.First(&product, id).Error; err != nil {
+		return nil, err
+	}
+
+	return product, nil
+}
+
+func DeleteProduct(id int32) error {
+	if err := db.Delete(&Product{}, id).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func AddProducts(id int32, quantity int32) (*Product, error) {
+	var product *Product
+
+	if quantity <= 0 {
+		return nil, errors.New("quantity added cannot be less than 0")
+	}
+
+	if err := db.First(&product, id).Error; err != nil {
+		return nil, err
+	}
+
+	product.Quantity += quantity
+
+	if err := db.Save(&product).Error; err != nil {
+		return nil, err
+	}
+
+	return product, nil
+}
+
+func RemoveProducts(id int32, quantity int32) (*Product, error) {
+	var product *Product
+
+	if quantity <= 0 {
+		return nil, errors.New("quantity removed cannot be less than 0")
+	}
+
+	if err := db.First(&product, id).Error; err != nil {
+		return nil, err
+	}
+
+	if product.Quantity-quantity < 0 {
+		return nil, errors.New("too many products to be removed")
+	}
+
+	product.Quantity -= quantity
+
+	if err := db.Save(&product).Error; err != nil {
+		return nil, err
+	}
+
+	return product, nil
 }
