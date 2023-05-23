@@ -14,3 +14,12 @@ type CreateProductRequest struct {
 	Price       float64 `json:"price"`
 	Quantity    int32   `json:"quantity"`
 }
+
+type DeletedProductResponse struct {
+	Id int32 `json:"id"`
+}
+
+type UpdateProductQuantityRequest struct {
+	Id       int32 `json:"id"`
+	Quantity int32 `json:"quantity"`
+}
