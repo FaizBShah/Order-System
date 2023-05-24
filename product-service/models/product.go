@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -30,7 +31,7 @@ func CreateProduct(newProduct *Product) (*Product, error) {
 	}
 
 	if err := db.Create(newProduct).Error; err != nil {
-		return nil, err
+		return nil, errors.New("error in creating a new product")
 	}
 
 	return newProduct, nil
@@ -57,8 +58,8 @@ func GetProduct(id int32) (*Product, error) {
 }
 
 func DeleteProduct(id int32) error {
-	if err := db.Delete(&Product{}, id).Error; err != nil {
-		return err
+	if db.Delete(&Product{}, id).RowsAffected < 1 {
+		return fmt.Errorf("product with id %d does not exist", id)
 	}
 
 	return nil
