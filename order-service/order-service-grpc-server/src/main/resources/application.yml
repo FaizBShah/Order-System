@@ -1,0 +1,17 @@
+grpc:
+  server:
+    port: 9002
+
+spring:
+  datasource:
+    username: ${PG_USERNAME}
+    password: ${PG_PASSWORD}
+    url: jdbc:postgresql://localhost:5432/nikhil_order_service
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
