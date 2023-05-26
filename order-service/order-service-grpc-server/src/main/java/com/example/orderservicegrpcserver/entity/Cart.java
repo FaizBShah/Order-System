@@ -6,30 +6,33 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
-@Table(name = "orders")
+@Table(name = "carts")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Order {
+public class Cart {
 
     @Id
     @SequenceGenerator(
-            name = "orders_sequence",
-            sequenceName = "orders_sequence",
+            name = "carts_sequence",
+            sequenceName = "carts_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "orders_sequence"
+            generator = "carts_sequence"
     )
     private Long id;
 
-    @Column(nullable = false)
-    private Long userId;
+    @ElementCollection
+    @CollectionTable(name = "cart_products")
+    private List<CartProduct> cartProducts;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cart_id", referencedColumnName = "id")
-    private Cart cart;
+    @Column(nullable = false)
+    private Double totalPrice;
+
 }
