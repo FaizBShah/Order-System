@@ -1,4 +1,4 @@
-package com.example.orderservicegrpcserver;
+package com.example.orderservicegrpcserver.service;
 
 import com.example.proto.proto.ProductServiceGrpc;
 import net.devh.boot.grpc.server.service.GrpcService;
