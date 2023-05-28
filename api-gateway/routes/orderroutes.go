@@ -7,5 +7,6 @@ import (
 )
 
 func RegisterOrderRoutes(router *mux.Router) {
-	router.HandleFunc("/orders", orderhandler.GetAllOrders).Methods("GET")
+	router.HandleFunc("/orders", orderhandler.CreateOrder).Methods("POST")
+	router.HandleFunc("/orders/user/{userId}", orderhandler.GetAllOrdersByUserId).Methods("GET")
 }
