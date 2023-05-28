@@ -28,6 +28,15 @@ message CreateOrderResponse {
   Cart cart = 3;
 }
 
-service ProductService {
+message GetAllOrdersByUserIdRequest {
+  int64 userId = 1;
+}
+
+message GetAllOrdersByUserIdResponse {
+  repeated CreateOrderResponse orders = 1;
+}
+
+service OrderService {
   rpc createOrder(CreateOrderRequest) returns (CreateOrderResponse) {}
+  rpc getAllOrdersByUserId(GetAllOrdersByUserIdRequest) returns (GetAllOrdersByUserIdResponse) {}
 }
