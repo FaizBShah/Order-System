@@ -20,26 +20,7 @@ public class OrderGrpcController extends OrderServiceGrpc.OrderServiceImplBase {
     public void createOrder(CreateOrderRequest request, StreamObserver<CreateOrderResponse> responseObserver) {
         Order order = orderService.createOrder(request.getUserId(), request.getCart().getProductsList());
 
-        List<Product> products = order.getCart().getCartProducts().stream()
-                .map(cartProduct -> Product
-                        .newBuilder()
-                        .setId(cartProduct.getProductId())
-                        .setName(cartProduct.getName())
-                        .setDescription(cartProduct.getDescription())
-                        .setPrice(cartProduct.getPrice())
-                        .setQuantity(cartProduct.getQuantity())
-                        .build())
-                .collect(Collectors.toList());
-
-        Cart cart = Cart.newBuilder()
-                .addAllProducts(products)
-                .build();
-
-        CreateOrderResponse response = CreateOrderResponse.newBuilder()
-                .setId(order.getId())
-                .setUserId(order.getUserId())
-                .setCart(cart)
-                .build();
+        CreateOrderResponse response = orderService.convertOrderToCreateOrderResponse(order);
 
         responseObserver.onNext(response);
         responseObserver.onCompleted();
@@ -50,30 +31,7 @@ public class OrderGrpcController extends OrderServiceGrpc.OrderServiceImplBase {
         List<Order> orders = orderService.getAllOrdersByUserId(request.getUserId());
 
         List<CreateOrderResponse> userOrders = orders.stream()
-                .map((order -> {
-                    List<Product> products = order.getCart().getCartProducts().stream()
-                            .map(cartProduct -> Product
-                                    .newBuilder()
-                                    .setId(cartProduct.getProductId())
-                                    .setName(cartProduct.getName())
-                                    .setDescription(cartProduct.getDescription())
-                                    .setPrice(cartProduct.getPrice())
-                                    .setQuantity(cartProduct.getQuantity())
-                                    .build())
-                            .collect(Collectors.toList());
-
-                    Cart cart = Cart.newBuilder()
-                            .addAllProducts(products)
-                            .build();
-
-                    CreateOrderResponse response = CreateOrderResponse.newBuilder()
-                            .setId(order.getId())
-                            .setUserId(order.getUserId())
-                            .setCart(cart)
-                            .build();
-
-                    return response;
-                }))
+                .map((order) -> orderService.convertOrderToCreateOrderResponse(order))
                 .collect(Collectors.toList());
 
         GetAllOrdersByUserIdResponse response = GetAllOrdersByUserIdResponse.newBuilder()

@@ -4,6 +4,7 @@ import com.example.orderservicegrpcserver.entity.Cart;
 import com.example.orderservicegrpcserver.entity.CartProduct;
 import com.example.orderservicegrpcserver.entity.Order;
 import com.example.orderservicegrpcserver.repository.OrderRepository;
+import com.example.proto.proto.CreateOrderResponse;
 import com.example.proto.proto.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,31 @@ public class OrderService {
 
     public List<Order> getAllOrdersByUserId(Long userId) {
         return orderRepository.findByUserId(userId);
+    }
+
+    public CreateOrderResponse convertOrderToCreateOrderResponse(Order order) {
+        List<Product> products = order.getCart().getCartProducts().stream()
+                .map(cartProduct -> Product
+                        .newBuilder()
+                        .setId(cartProduct.getProductId())
+                        .setName(cartProduct.getName())
+                        .setDescription(cartProduct.getDescription())
+                        .setPrice(cartProduct.getPrice())
+                        .setQuantity(cartProduct.getQuantity())
+                        .build())
+                .collect(Collectors.toList());
+
+        com.example.proto.proto.Cart cart = com.example.proto.proto.Cart.newBuilder()
+                .addAllProducts(products)
+                .build();
+
+        CreateOrderResponse response = CreateOrderResponse.newBuilder()
+                .setId(order.getId())
+                .setUserId(order.getUserId())
+                .setCart(cart)
+                .build();
+
+        return response;
     }
 
 }
