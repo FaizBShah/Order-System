@@ -18,7 +18,6 @@ message RegisterUserResponse {
     int64 id = 1;
     string name = 2;
     string email = 3;
-    string password = 4;
     UserType user_type = 5;
 }
 
@@ -35,7 +34,7 @@ message AuthenticateUserRequest {
     string token = 1;
 }
 
-message AUthenticateUserResponse {
+message AuthenticateUserResponse {
     int64 id = 1;
     string email = 2;
     UserType user_type = 3;
@@ -44,5 +43,5 @@ message AUthenticateUserResponse {
 service AuthService {
     rpc RegisterUser(RegisterUserRequest) returns (RegisterUserResponse) {}
     rpc LoginUser(LoginUserRequest) returns (LoginUserResponse) {}
-    rpc AuthencticateUser(AuthenticateUserRequest) returns (AUthenticateUserResponse) {}
+    rpc AuthencticateUser(AuthenticateUserRequest) returns (AuthenticateUserResponse) {}
 }

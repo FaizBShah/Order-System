@@ -12,7 +12,7 @@ var (
 	OrderServiceClient proto.OrderServiceClient
 )
 
-func InitProductClient() {
+func InitOrderClient() {
 	conn, err := grpc.Dial("localhost:9002", grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
 
 	if err != nil {

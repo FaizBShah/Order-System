@@ -30,7 +30,7 @@ const (
 type AuthServiceClient interface {
 	RegisterUser(ctx context.Context, in *RegisterUserRequest, opts ...grpc.CallOption) (*RegisterUserResponse, error)
 	LoginUser(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error)
-	AuthencticateUser(ctx context.Context, in *AuthenticateUserRequest, opts ...grpc.CallOption) (*AUthenticateUserResponse, error)
+	AuthencticateUser(ctx context.Context, in *AuthenticateUserRequest, opts ...grpc.CallOption) (*AuthenticateUserResponse, error)
 }
 
 type authServiceClient struct {
@@ -59,8 +59,8 @@ func (c *authServiceClient) LoginUser(ctx context.Context, in *LoginUserRequest,
 	return out, nil
 }
 
-func (c *authServiceClient) AuthencticateUser(ctx context.Context, in *AuthenticateUserRequest, opts ...grpc.CallOption) (*AUthenticateUserResponse, error) {
-	out := new(AUthenticateUserResponse)
+func (c *authServiceClient) AuthencticateUser(ctx context.Context, in *AuthenticateUserRequest, opts ...grpc.CallOption) (*AuthenticateUserResponse, error) {
+	out := new(AuthenticateUserResponse)
 	err := c.cc.Invoke(ctx, AuthService_AuthencticateUser_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -74,7 +74,7 @@ func (c *authServiceClient) AuthencticateUser(ctx context.Context, in *Authentic
 type AuthServiceServer interface {
 	RegisterUser(context.Context, *RegisterUserRequest) (*RegisterUserResponse, error)
 	LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error)
-	AuthencticateUser(context.Context, *AuthenticateUserRequest) (*AUthenticateUserResponse, error)
+	AuthencticateUser(context.Context, *AuthenticateUserRequest) (*AuthenticateUserResponse, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }
 
@@ -88,7 +88,7 @@ func (UnimplementedAuthServiceServer) RegisterUser(context.Context, *RegisterUse
 func (UnimplementedAuthServiceServer) LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LoginUser not implemented")
 }
-func (UnimplementedAuthServiceServer) AuthencticateUser(context.Context, *AuthenticateUserRequest) (*AUthenticateUserResponse, error) {
+func (UnimplementedAuthServiceServer) AuthencticateUser(context.Context, *AuthenticateUserRequest) (*AuthenticateUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AuthencticateUser not implemented")
 }
 func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}
