@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+option go_package = "./auth";
+
+enum UserType {
+    ADMIN = 0;
+    REGULAR = 1;
+}
+
+message RegisterUserRequest {
+    string name = 1;
+    string email = 2;
+    string password = 3;
+    UserType user_type = 4;
+}
+
+message RegisterUserResponse {
+    int64 id = 1;
+    string name = 2;
+    string email = 3;
+    string password = 4;
+    UserType user_type = 5;
+}
+
+message LoginUserRequest {
+    string email = 1;
+    string password = 2;
+}
+
+message LoginUserResponse {
+    string token = 1;
+}
+
+message AuthenticateUserRequest {
+    string token = 1;
+}
+
+message AUthenticateUserResponse {
+    int64 id = 1;
+    string email = 2;
+    UserType user_type = 3;
+}
+
+service AuthService {
+    rpc RegisterUser(RegisterUserRequest) returns (RegisterUserResponse) {}
+    rpc LoginUser(LoginUserRequest) returns (LoginUserResponse) {}
+    rpc AuthencticateUser(AuthenticateUserRequest) returns (AUthenticateUserResponse) {}
+}
