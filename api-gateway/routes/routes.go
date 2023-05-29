@@ -9,6 +9,7 @@ func NewRouter() *mux.Router {
 
 	RegisterProductRoutes(router)
 	RegisterOrderRoutes(router)
+	RegisterAuthRoutes(router)
 
 	return router
 }
