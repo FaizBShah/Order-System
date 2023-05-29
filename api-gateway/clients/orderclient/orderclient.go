@@ -16,9 +16,9 @@ func InitOrderClient() {
 	conn, err := grpc.Dial("localhost:9002", grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
 
 	if err != nil {
-		log.Fatal("Failed to connect to the product microservice")
+		log.Fatal("Failed to connect to the Order Microservice")
 	}
 
-	log.Printf("gRPC Client connected to Product Microservice")
+	log.Printf("gRPC Client connected to Order Microservice")
 	OrderServiceClient = proto.NewOrderServiceClient(conn)
 }

@@ -16,7 +16,7 @@ func InitProductClient() {
 	conn, err := grpc.Dial("localhost:9001", grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
 
 	if err != nil {
-		log.Fatal("Failed to connect to the product microservice")
+		log.Fatal("Failed to connect to the Product Microservice")
 	}
 
 	log.Printf("gRPC Client connected to Product Microservice")

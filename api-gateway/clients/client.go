@@ -1,6 +1,7 @@
 package clients
 
 import (
+	"api-gateway/clients/authclient"
 	"api-gateway/clients/orderclient"
 	"api-gateway/clients/productclient"
 )
@@ -8,4 +9,5 @@ import (
 func InitClients() {
 	productclient.InitProductClient()
 	orderclient.InitOrderClient()
+	authclient.InitAuthClient()
 }
