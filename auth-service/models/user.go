@@ -19,7 +19,7 @@ var (
 
 type User struct {
 	gorm.Model
-	ID       uint     `gorm:"primarykey;AUTO_INCREMENT"`
+	ID       int64    `gorm:"primarykey;AUTO_INCREMENT"`
 	Name     string   `gorm:"column:name"`
 	Email    string   `gorm:"column:email;unique"`
 	Password string   `gorm:"column:password"`
