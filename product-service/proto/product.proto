@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package product_service;
+
 import "google/protobuf/empty.proto";
 
 option go_package = "./product";
@@ -60,5 +62,5 @@ service ProductService {
     rpc DeleteProduct(ProductIdRequest) returns (ProductIdRequest) {}
     rpc AddProducts(UpdateProductQuantityRequest) returns (CreateProductResponse) {}
     rpc RemoveProducts(UpdateProductQuantityRequest) returns (CreateProductResponse) {}
-    rpc UpdateProducts(UpdateProductRequest) returns (UpdateProductResponse) {}
+    rpc updateProducts(UpdateProductRequest) returns (UpdateProductResponse) {}
 }

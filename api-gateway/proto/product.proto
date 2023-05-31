@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package product_service;
+
 import "google/protobuf/empty.proto";
 
 option go_package = "./product";

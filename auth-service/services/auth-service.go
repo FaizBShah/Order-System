@@ -7,7 +7,13 @@ import (
 )
 
 func RegisterUser(name string, email string, password string, userType models.UserType) (*models.User, error) {
-	if user, _ := models.FindUserByEmail(email); user != nil {
+	user, err := models.FindUserByEmail(email)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if user != nil {
 		return nil, errors.New("user is already registered")
 	}
 
@@ -31,6 +37,10 @@ func LoginUser(email string, password string) (string, error) {
 	user, err := models.FindUserByEmail(email)
 
 	if err != nil {
+		return "", err
+	}
+
+	if user == nil {
 		return "", errors.New("user's account does not exist")
 	}
 

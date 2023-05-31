@@ -20,13 +20,13 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	ProductService_CreateProduct_FullMethodName  = "/ProductService/CreateProduct"
-	ProductService_GetAllProducts_FullMethodName = "/ProductService/GetAllProducts"
-	ProductService_GetProduct_FullMethodName     = "/ProductService/GetProduct"
-	ProductService_DeleteProduct_FullMethodName  = "/ProductService/DeleteProduct"
-	ProductService_AddProducts_FullMethodName    = "/ProductService/AddProducts"
-	ProductService_RemoveProducts_FullMethodName = "/ProductService/RemoveProducts"
-	ProductService_UpdateProducts_FullMethodName = "/ProductService/UpdateProducts"
+	ProductService_CreateProduct_FullMethodName  = "/product_service.ProductService/CreateProduct"
+	ProductService_GetAllProducts_FullMethodName = "/product_service.ProductService/GetAllProducts"
+	ProductService_GetProduct_FullMethodName     = "/product_service.ProductService/GetProduct"
+	ProductService_DeleteProduct_FullMethodName  = "/product_service.ProductService/DeleteProduct"
+	ProductService_AddProducts_FullMethodName    = "/product_service.ProductService/AddProducts"
+	ProductService_RemoveProducts_FullMethodName = "/product_service.ProductService/RemoveProducts"
+	ProductService_UpdateProducts_FullMethodName = "/product_service.ProductService/updateProducts"
 )
 
 // ProductServiceClient is the client API for ProductService service.
@@ -295,7 +295,7 @@ func _ProductService_UpdateProducts_Handler(srv interface{}, ctx context.Context
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ProductService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "ProductService",
+	ServiceName: "product_service.ProductService",
 	HandlerType: (*ProductServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -323,7 +323,7 @@ var ProductService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ProductService_RemoveProducts_Handler,
 		},
 		{
-			MethodName: "UpdateProducts",
+			MethodName: "updateProducts",
 			Handler:    _ProductService_UpdateProducts_Handler,
 		},
 	},

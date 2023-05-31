@@ -3,6 +3,7 @@ package orderhandler
 import (
 	"api-gateway/clients/orderclient"
 	"api-gateway/dto"
+	"api-gateway/middlewares"
 	proto "api-gateway/proto/order"
 	"encoding/json"
 	"net/http"
@@ -25,7 +26,7 @@ func CreateOrder(respWriter http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	for _, product := range newOrder.Cart.Products {
+	for _, product := range newOrder.Products {
 		products = append(products, &proto.Product{
 			Id:          int64(product.Id),
 			Name:        product.Name,
@@ -36,7 +37,7 @@ func CreateOrder(respWriter http.ResponseWriter, req *http.Request) {
 	}
 
 	createdOrder, err := orderclient.OrderServiceClient.CreateOrder(req.Context(), &proto.CreateOrderRequest{
-		UserId: newOrder.UserId,
+		UserId: req.Context().Value(middlewares.USER_ID).(int64),
 		Cart: &proto.Cart{
 			Products: products,
 		},

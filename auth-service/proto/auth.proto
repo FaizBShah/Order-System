@@ -43,5 +43,5 @@ message AuthenticateUserResponse {
 service AuthService {
     rpc RegisterUser(RegisterUserRequest) returns (RegisterUserResponse) {}
     rpc LoginUser(LoginUserRequest) returns (LoginUserResponse) {}
-    rpc AuthencticateUser(AuthenticateUserRequest) returns (AuthenticateUserResponse) {}
+    rpc AuthenticateUser(AuthenticateUserRequest) returns (AuthenticateUserResponse) {}
 }

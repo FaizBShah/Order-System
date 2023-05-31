@@ -31,7 +31,7 @@ func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 
 		token := strings.TrimPrefix(header, "Bearer ")
 
-		user, err := authclient.AuthServiceClient.AuthencticateUser(req.Context(), &proto.AuthenticateUserRequest{
+		user, err := authclient.AuthServiceClient.AuthenticateUser(req.Context(), &proto.AuthenticateUserRequest{
 			Token: token,
 		})
 

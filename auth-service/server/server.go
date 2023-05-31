@@ -12,7 +12,7 @@ type GRPCServer struct {
 }
 
 func (s *GRPCServer) RegisterUser(ctx context.Context, req *proto.RegisterUserRequest) (*proto.RegisterUserResponse, error) {
-	user, err := services.RegisterUser(req.Name, req.Email, req.Password, models.UserType(req.UserType.String()))
+	user, err := services.RegisterUser(req.Name, req.Email, req.Password, models.UserType(req.UserType))
 
 	if err != nil {
 		return nil, err

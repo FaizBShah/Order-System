@@ -5,8 +5,7 @@ type Cart struct {
 }
 
 type CreateOrderRequest struct {
-	UserId int64 `json:"userId"`
-	Cart   Cart  `json:"cart"`
+	Products []Product `json:"products"`
 }
 
 type CreateOrderResponse struct {

@@ -6,11 +6,11 @@ import (
 	"gorm.io/gorm"
 )
 
-type UserType string
+type UserType int32
 
 const (
-	Admin   UserType = "ADMIN"
-	Regular UserType = "REGULAR"
+	Admin UserType = iota
+	Regular
 )
 
 var (
@@ -50,8 +50,14 @@ func FindUserByEmail(email string) (*User, error) {
 		return nil, errors.New("email is empty")
 	}
 
-	if err := db.Where("email = ?", email).Find(&user).Error; err != nil {
-		return nil, err
+	result := db.Where("email = ?", email).Find(&user)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		return nil, nil
 	}
 
 	return user, nil

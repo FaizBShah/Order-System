@@ -28,7 +28,7 @@ public class Cart {
     )
     private Long id;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "cart_products")
     private List<CartProduct> cartProducts;
 
