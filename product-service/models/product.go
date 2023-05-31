@@ -13,7 +13,7 @@ var (
 
 type Product struct {
 	gorm.Model
-	ID          uint    `gorm:"primarykey;AUTO_INCREMENT"`
+	ID          int64   `gorm:"primarykey;AUTO_INCREMENT"`
 	Name        string  `gorm:"column:name;unique"`
 	Description string  `gorm:"column:description"`
 	Price       float64 `gorm:"column:price"`
@@ -107,4 +107,40 @@ func RemoveProducts(id int32, quantity int32) (*Product, error) {
 	}
 
 	return product, nil
+}
+
+func UpdateProducts(ids []int64, quantities []int32) error {
+	var products []Product
+
+	if len(ids) != len(quantities) {
+		return errors.New("items no.s are mismatched")
+	}
+
+	if err := db.Where("id IN ?", ids).Find(&products).Error; err != nil {
+		return errors.New("failed to update products")
+	}
+
+	if len(ids) != len(products) {
+		return errors.New("some ids are invalid")
+	}
+
+	for idx, quantity := range quantities {
+		if quantity > products[idx].Quantity {
+			return errors.New("trying to order more items than there is in the inventory")
+		}
+	}
+
+	for idx, quantity := range quantities {
+		products[idx].Quantity -= quantity
+	}
+
+	return db.Transaction(func(tx *gorm.DB) error {
+		for _, product := range products {
+			if err := db.Save(&product).Error; err != nil {
+				return errors.New("failed to update products")
+			}
+		}
+
+		return nil
+	})
 }

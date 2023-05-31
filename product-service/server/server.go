@@ -100,3 +100,34 @@ func (s *GRPCServer) RemoveProducts(ctx context.Context, req *proto.UpdateProduc
 		Price:       product.Price,
 		Quantity:    product.Quantity}, nil
 }
+
+func (s *GRPCServer) UpdateProducts(ctx context.Context, req *proto.UpdateProductRequest) (*proto.UpdateProductResponse, error) {
+	var ids []int64
+	var quantities []int32
+
+	for _, product := range req.Products {
+		ids = append(ids, product.Id)
+		quantities = append(quantities, product.Quantity)
+	}
+
+	response := &proto.UpdateProductResponse{}
+
+	if err := services.UpdateProducts(ids, quantities); err != nil {
+		errorResponse := &proto.ErrorResponse{
+			Status:  400,
+			Message: err.Error(),
+		}
+
+		response.Response = &proto.UpdateProductResponse_ErrorResponse{
+			ErrorResponse: errorResponse,
+		}
+
+		return response, nil
+	}
+
+	response.Response = &proto.UpdateProductResponse_SuccessResponse{
+		SuccessResponse: &emptypb.Empty{},
+	}
+
+	return response, nil
+}

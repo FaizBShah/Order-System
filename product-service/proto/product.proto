@@ -35,23 +35,23 @@ message UpdateProductQuantityRequest {
 message ErrorResponse {
     int32 status = 1;
     string message = 2;
-  }
+}
   
-  message UpdateProduct {
+message UpdateProduct {
     int64 id = 1;
     int32 quantity = 2;
-  }
+}
   
-  message UpdateProductRequest {
+message UpdateProductRequest {
     repeated UpdateProduct products = 1;
-  }
+}
   
-  message Response {
+message UpdateProductResponse {
     oneof response {
       google.protobuf.Empty successResponse = 1;
       ErrorResponse errorResponse = 2;
     }
-  }
+}
 
 service ProductService {
     rpc CreateProduct(CreateProductRequest) returns (CreateProductResponse) {}
@@ -60,5 +60,5 @@ service ProductService {
     rpc DeleteProduct(ProductIdRequest) returns (ProductIdRequest) {}
     rpc AddProducts(UpdateProductQuantityRequest) returns (CreateProductResponse) {}
     rpc RemoveProducts(UpdateProductQuantityRequest) returns (CreateProductResponse) {}
-    rpc updateProducts(UpdateProductRequest) returns (Response) {}
+    rpc UpdateProducts(UpdateProductRequest) returns (UpdateProductResponse) {}
 }

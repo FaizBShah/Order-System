@@ -43,3 +43,7 @@ func RemoveProducts(id int32, quantity int32) (*models.Product, error) {
 
 	return models.RemoveProducts(id, quantity)
 }
+
+func UpdateProducts(ids []int64, quantities []int32) error {
+	return models.UpdateProducts(ids, quantities)
+}
