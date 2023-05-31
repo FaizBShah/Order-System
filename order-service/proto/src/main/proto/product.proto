@@ -21,7 +21,7 @@ message UpdateProductRequest {
   repeated UpdateProduct products = 1;
 }
 
-message Response {
+message UpdateProductResponse {
   oneof response {
     google.protobuf.Empty successResponse = 1;
     ErrorResponse errorResponse = 2;
@@ -29,5 +29,5 @@ message Response {
 }
 
 service ProductService {
-  rpc updateProducts(UpdateProductRequest) returns (Response) {}
+  rpc updateProducts(UpdateProductRequest) returns (UpdateProductResponse) {}
 }

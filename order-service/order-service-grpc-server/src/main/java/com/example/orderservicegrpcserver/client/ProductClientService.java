@@ -2,9 +2,9 @@ package com.example.orderservicegrpcserver.client;
 
 import com.example.proto.order.Product;
 import com.example.proto.product.ProductServiceGrpc;
-import com.example.proto.product.Response;
 import com.example.proto.product.UpdateProduct;
 import com.example.proto.product.UpdateProductRequest;
+import com.example.proto.product.UpdateProductResponse;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +28,9 @@ public class ProductClientService {
                 .addAllProducts(updateProducts)
                 .build();
 
-        Response response = productServiceStub.updateProducts(request);
+        UpdateProductResponse response = productServiceStub.updateProducts(request);
 
-        if (response.getResponseCase() == Response.ResponseCase.ERRORRESPONSE) {
+        if (response.getResponseCase() == UpdateProductResponse.ResponseCase.ERRORRESPONSE) {
             throw new IllegalStateException("Failed to update product");
         }
     }
