@@ -1,6 +1,10 @@
 grpc:
   server:
     port: 9002
+  client:
+    product:
+      address: static://localhost:9001
+      negotiation-type: plaintext
 
 spring:
   datasource:

@@ -1,11 +1,12 @@
 package com.example.orderservicegrpcserver.service;
 
+import com.example.orderservicegrpcserver.client.ProductClientService;
 import com.example.orderservicegrpcserver.entity.Cart;
 import com.example.orderservicegrpcserver.entity.CartProduct;
 import com.example.orderservicegrpcserver.entity.Order;
 import com.example.orderservicegrpcserver.repository.OrderRepository;
-import com.example.proto.proto.CreateOrderResponse;
-import com.example.proto.proto.Product;
+import com.example.proto.order.CreateOrderResponse;
+import com.example.proto.order.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,9 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private ProductClientService productClientService;
+
     public Order createOrder(Long userId, List<Product> products) {
         List<CartProduct> cartProducts = products.stream()
                 .map((product) -> CartProduct.builder()
@@ -27,7 +31,7 @@ public class OrderService {
                         .price(product.getPrice())
                         .quantity(product.getQuantity())
                         .build())
-                .collect(Collectors.toList());
+                .toList();
 
         Double totalPrice = products.stream()
                 .mapToDouble((product -> product.getPrice() * product.getQuantity()))
@@ -42,6 +46,8 @@ public class OrderService {
                 .userId(userId)
                 .cart(cart)
                 .build();
+
+        productClientService.updateProducts(products);
 
         return orderRepository.save(order);
     }
@@ -60,19 +66,17 @@ public class OrderService {
                         .setPrice(cartProduct.getPrice())
                         .setQuantity(cartProduct.getQuantity())
                         .build())
-                .collect(Collectors.toList());
+                .toList();
 
-        com.example.proto.proto.Cart cart = com.example.proto.proto.Cart.newBuilder()
+        com.example.proto.order.Cart cart = com.example.proto.order.Cart.newBuilder()
                 .addAllProducts(products)
                 .build();
 
-        CreateOrderResponse response = CreateOrderResponse.newBuilder()
+        return CreateOrderResponse.newBuilder()
                 .setId(order.getId())
                 .setUserId(order.getUserId())
                 .setCart(cart)
                 .build();
-
-        return response;
     }
 
 }

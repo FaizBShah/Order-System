@@ -2,7 +2,7 @@ package com.example.orderservicegrpcserver.controller;
 
 import com.example.orderservicegrpcserver.entity.Order;
 import com.example.orderservicegrpcserver.service.OrderService;
-import com.example.proto.proto.*;
+import com.example.proto.order.*;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class OrderGrpcController extends OrderServiceGrpc.OrderServiceImplBase {
 
         List<CreateOrderResponse> userOrders = orders.stream()
                 .map((order) -> orderService.convertOrderToCreateOrderResponse(order))
-                .collect(Collectors.toList());
+                .toList();
 
         GetAllOrdersByUserIdResponse response = GetAllOrdersByUserIdResponse.newBuilder()
                 .addAllOrders(userOrders)
