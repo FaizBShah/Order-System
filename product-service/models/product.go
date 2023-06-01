@@ -112,6 +112,10 @@ func RemoveProducts(id int32, quantity int32) (*Product, error) {
 func UpdateProducts(ids []int64, quantities []int32) error {
 	var products []Product
 
+	if len(ids) == 0 {
+		return errors.New("empty id set passed")
+	}
+
 	if len(ids) != len(quantities) {
 		return errors.New("items no.s are mismatched")
 	}
