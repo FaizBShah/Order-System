@@ -10,7 +10,7 @@ import (
 )
 
 func setupDatabase(t *testing.T) *gorm.DB {
-	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("file:yourDbName?mode=memory&cache=shared"), &gorm.Config{})
 	assert.NoError(t, err)
 
 	models.InitProductModel(db)
@@ -291,4 +291,167 @@ func Test_Service_RemoveProductsShouldThrowAnErrorIfProductDoesNotExist(t *testi
 	assert.Error(t, err)
 	assert.Nil(t, product)
 	assert.Equal(t, gorm.ErrRecordNotFound, err)
+}
+
+func TestUpdateProductsShouldWorkCorrectly(t *testing.T) {
+	db := setupDatabase(t)
+	defer teardownDatabase(db)
+
+	newProduct1 := &models.Product{
+		Name:        "Test Product",
+		Description: "This is a test product",
+		Price:       9.99,
+		Quantity:    10,
+	}
+
+	newProduct2 := &models.Product{
+		Name:        "Test Product 2",
+		Description: "This is a test product 2",
+		Price:       8.75,
+		Quantity:    4,
+	}
+
+	ids := []int64{1, 2}
+	quantities := []int32{6, 2}
+
+	CreateProduct(newProduct1.Name, newProduct1.Description, newProduct1.Price, newProduct1.Quantity)
+	CreateProduct(newProduct2.Name, newProduct2.Description, newProduct2.Price, newProduct2.Quantity)
+
+	err1 := UpdateProducts(ids, quantities)
+	products, err2 := GetAllProducts()
+
+	assert.NoError(t, err1)
+	assert.NoError(t, err2)
+	assert.NotEmpty(t, products)
+	assert.Len(t, products, 2)
+	assert.NotNil(t, products[0])
+	assert.Equal(t, newProduct1.Name, products[0].Name)
+	assert.Equal(t, newProduct1.Description, products[0].Description)
+	assert.Equal(t, newProduct1.Price, products[0].Price)
+	assert.Equal(t, int32(4), products[0].Quantity)
+	assert.NotNil(t, products[1])
+	assert.Equal(t, newProduct2.Name, products[1].Name)
+	assert.Equal(t, newProduct2.Description, products[1].Description)
+	assert.Equal(t, newProduct2.Price, products[1].Price)
+	assert.Equal(t, int32(2), products[1].Quantity)
+}
+
+func TestUpdateProductsShouldThrowErrorIfNotAllIdsAreValid(t *testing.T) {
+	db := setupDatabase(t)
+	defer teardownDatabase(db)
+
+	newProduct1 := &models.Product{
+		Name:        "Test Product",
+		Description: "This is a test product",
+		Price:       9.99,
+		Quantity:    10,
+	}
+
+	newProduct2 := &models.Product{
+		Name:        "Test Product 2",
+		Description: "This is a test product 2",
+		Price:       8.75,
+		Quantity:    4,
+	}
+
+	ids := []int64{}
+	quantities := []int32{}
+
+	CreateProduct(newProduct1.Name, newProduct1.Description, newProduct1.Price, newProduct1.Quantity)
+	CreateProduct(newProduct2.Name, newProduct2.Description, newProduct2.Price, newProduct2.Quantity)
+
+	err := UpdateProducts(ids, quantities)
+
+	assert.Error(t, err)
+	assert.Equal(t, "empty id set passed", err.Error())
+}
+
+func TestUpdateProductsShouldThrowErrorIfIdsAndQuantitiesAreOfDifferentLength(t *testing.T) {
+	db := setupDatabase(t)
+	defer teardownDatabase(db)
+
+	newProduct1 := &models.Product{
+		Name:        "Test Product",
+		Description: "This is a test product",
+		Price:       9.99,
+		Quantity:    10,
+	}
+
+	newProduct2 := &models.Product{
+		Name:        "Test Product 2",
+		Description: "This is a test product 2",
+		Price:       8.75,
+		Quantity:    4,
+	}
+
+	ids := []int64{1, 2}
+	quantities := []int32{6}
+
+	CreateProduct(newProduct1.Name, newProduct1.Description, newProduct1.Price, newProduct1.Quantity)
+	CreateProduct(newProduct2.Name, newProduct2.Description, newProduct2.Price, newProduct2.Quantity)
+
+	err := UpdateProducts(ids, quantities)
+
+	assert.Error(t, err)
+	assert.Equal(t, "items no.s are mismatched", err.Error())
+}
+
+func TestUpdateProductsShouldThrowErrorIfSomeIdsAreInvalid(t *testing.T) {
+	db := setupDatabase(t)
+	defer teardownDatabase(db)
+
+	newProduct1 := &models.Product{
+		Name:        "Test Product",
+		Description: "This is a test product",
+		Price:       9.99,
+		Quantity:    10,
+	}
+
+	newProduct2 := &models.Product{
+		Name:        "Test Product 2",
+		Description: "This is a test product 2",
+		Price:       8.75,
+		Quantity:    4,
+	}
+
+	ids := []int64{1, 3}
+	quantities := []int32{6, 2}
+
+	CreateProduct(newProduct1.Name, newProduct1.Description, newProduct1.Price, newProduct1.Quantity)
+	CreateProduct(newProduct2.Name, newProduct2.Description, newProduct2.Price, newProduct2.Quantity)
+
+	err := UpdateProducts(ids, quantities)
+
+	assert.Error(t, err)
+	assert.Equal(t, "some ids are invalid", err.Error())
+}
+
+func TestUpdateProductsShouldBuyMoreItemsThanPrsentInTheInventory(t *testing.T) {
+	db := setupDatabase(t)
+	defer teardownDatabase(db)
+
+	newProduct1 := &models.Product{
+		Name:        "Test Product",
+		Description: "This is a test product",
+		Price:       9.99,
+		Quantity:    10,
+	}
+
+	newProduct2 := &models.Product{
+		Name:        "Test Product 2",
+		Description: "This is a test product 2",
+		Price:       8.75,
+		Quantity:    4,
+	}
+
+	ids := []int64{1, 2}
+	quantities := []int32{11, 2}
+
+	CreateProduct(newProduct1.Name, newProduct1.Description, newProduct1.Price, newProduct1.Quantity)
+	CreateProduct(newProduct2.Name, newProduct2.Description, newProduct2.Price, newProduct2.Quantity)
+
+	err := UpdateProducts(ids, quantities)
+
+	assert.Error(t, err)
+	assert.Equal(t, "trying to order more items than there is in the inventory", err.Error())
 }
