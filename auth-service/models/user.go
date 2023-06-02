@@ -33,11 +33,11 @@ func InitProductModel(dbInstance *gorm.DB) {
 
 func CreateUser(newUser *User) (*User, error) {
 	if newUser == nil {
-		return nil, errors.New("invalid product")
+		return nil, errors.New("invalid user")
 	}
 
 	if err := db.Create(newUser).Error; err != nil {
-		return nil, errors.New("error in creating a new product")
+		return nil, errors.New("error in creating a new user")
 	}
 
 	return newUser, nil
