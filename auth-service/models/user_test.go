@@ -12,7 +12,7 @@ func setupDatabase(t *testing.T) *gorm.DB {
 	db, err := gorm.Open(sqlite.Open("file:yourDbName?mode=memory&cache=shared"), &gorm.Config{})
 	assert.NoError(t, err)
 
-	InitProductModel(db)
+	InitUserModel(db)
 
 	return db
 }
@@ -23,7 +23,7 @@ func teardownDatabase(db *gorm.DB) {
 	sql.Close()
 }
 
-func TestShouldInitProductModelWork(t *testing.T) {
+func TestShouldInitUserModelWork(t *testing.T) {
 	db := setupDatabase(t)
 	defer teardownDatabase(db)
 

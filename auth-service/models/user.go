@@ -26,7 +26,7 @@ type User struct {
 	UserType UserType `gorm:"column:user_type"`
 }
 
-func InitProductModel(dbInstance *gorm.DB) {
+func InitUserModel(dbInstance *gorm.DB) {
 	db = dbInstance
 	db.AutoMigrate(&User{})
 }
