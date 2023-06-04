@@ -48,5 +48,5 @@ func Close() error {
 
 func initModels() {
 	log.Printf("Initializing models")
-	models.InitProductModel(DB)
+	models.InitUserModel(DB)
 }
